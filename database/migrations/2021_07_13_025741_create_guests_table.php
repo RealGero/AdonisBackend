@@ -21,6 +21,7 @@ class CreateGuestsTable extends Migration
             $table->string('l_name');
             $table->string('address');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

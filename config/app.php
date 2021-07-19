@@ -227,6 +227,10 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'CredentialHelper' => App\Helpers\UserCredentialHelper::class,
+        'AdminHelper' => App\Helpers\AdminHelper::class,
+        'CompanyHelper' => App\Helpers\CompanyHelper::class,
+        'GuestHelper' => App\Helpers\GuestHelper::class,
 
     ],
 

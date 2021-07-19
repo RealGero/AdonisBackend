@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\GuestHelper;
 use App\Models\Guest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Auth;
 class GuestsController extends Controller
@@ -14,7 +16,12 @@ class GuestsController extends Controller
      */
     public function index()
     {
-        //
+        
+        $companies = Company::all();
+
+        return response()->json($companies);
+
+
     }
 
     /**
@@ -35,37 +42,10 @@ class GuestsController extends Controller
      */
     public function store(Request $request)
     {
-        // VALIDATION PROFILE TO GUEST
-        $request->validate([
-            'first_name'=> 'required|string|min:2|regex:/^[\pL\s\-]+$/u',
-            'middle_name'=> 'required|string|min:2|regex:/^[\pL\s\-]+$/u',
-            'last_name'=> 'required|string|min:2|regex:/^[\pL\s\-]+$/u',
-            'address'=> 'required|string|min:2'
-        ]);
-
-        // VALIDATION PROFILE TO GUEST
-        $guest = new Guest;
-
-
-        $guest->f_name = $request->input('first_name');
-        $guest->m_name = $request->input('middle_name');
-        $guest->l_name = $request->input('last_name');
-        $guest->address = $request->input('address');
-        $guest->user_id = Auth::user()->user_id;
         
-        $guest->save();
-      
+        $guest = GuestHelper::store($request);
 
-        return response()->json([
-
-            'message'=>'Successfully Added',
-            'guest' => $guest
-
-        ]);
-
-        
-
-       
+        return response()->json($guest);
     }
 
     /**
@@ -97,9 +77,11 @@ class GuestsController extends Controller
      * @param  \App\Models\Guest  $guest
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Guest $guest)
+    public function update(Request $request, $id)
     {
-        //
+        $guest = GuestHelper::update($request, $id);
+
+        return response()->json($guest);
     }
 
     /**

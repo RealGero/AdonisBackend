@@ -18,7 +18,8 @@ class CreateReviewsTable extends Migration
             $table->bigInteger('company_id');
             $table->bigInteger('guest_id');
             $table->longText('comment');
-            $table->integer('rate');
+            $table->string('review_image')->default('default-review-image.jpg');
+            $table->double('ratings',2,1);
             $table->timestamps();
         });
     }

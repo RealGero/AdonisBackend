@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use App\Helpers\CompanyHelper;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Auth;
@@ -36,22 +37,10 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            "company_name" => 'required|string',
-            "address" => 'required|string',
-        ]);
+        
+        $data = CompanyHelper::store($request);
 
-        $company = new Company;
-        $company->company_name = $request->input('company_name');
-        $company->address = $request->input('address');
-        $company->user_id = Auth::user()->user_id;
-
-        $company->save();
-
-        return response()->json([
-            'message' =>'Successfully updated your profile',
-            'company' => $company
-        ]);
+        return response()->json($data);
 
 
     }

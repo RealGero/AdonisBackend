@@ -20,6 +20,7 @@ class CreateCompaniesTable extends Migration
             $table->string('address');
             $table->string('image')->default('default.jpg');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
