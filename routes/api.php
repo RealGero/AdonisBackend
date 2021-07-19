@@ -27,7 +27,9 @@ use App\Http\Controllers\CompanyController;
 
 
 Route::group(['middleware'=>['auth:api']],function(){
+    // ALL
     Route::post('/logout',[UsersController::class, 'logout']); 
+    Route::post('/update-password',[GuestsController::class, 'updatePassword']); 
     
     // GUEST ROUTE
     

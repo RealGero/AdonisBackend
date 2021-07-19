@@ -3,6 +3,7 @@
 namespace App\Helpers;
 use App\Models\Guest;
 use Auth;
+use Illuminate\Support\Facades\Hash;
 class GuestHelper
 {
 
@@ -68,6 +69,40 @@ class GuestHelper
                 'guest' => $guest
     
             ]);
+
+
+    }
+    public static function updatePassword($request)
+    {
+
+        $request->validate([
+
+            'current_password'=> 'required',
+            'new_password'=>'required|string|min:8',
+            'password_confirmation' =>'required|min:8|same:new_password'
     
+            ]);
+
+        if(!(Hash::check($request->get('current_password'),Auth::user()->password)))
+        {
+            return response()->json([
+                'error' => 'The current password does not match with your old password'
+            ]);
+        }
+
+        if(strcmp($request->get('current_password'),$request->get('new_password'))==0)
+        {
+            return response()->json([
+                'error' => 'The current password cannot be the same with the new password'
+            ]);
+        }
+        $user = Auth::user();
+
+        $user->password = bcrypt($request->get('new_password'));
+        $user->save();
+
+        return response()->json([
+            'message' => 'Password successfully changed'  
+          ]);
     }
 }

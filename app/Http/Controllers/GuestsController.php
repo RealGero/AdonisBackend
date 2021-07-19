@@ -7,6 +7,7 @@ use App\Models\Guest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Support\Facades\Hash;
 class GuestsController extends Controller
 {
     /**
@@ -93,5 +94,17 @@ class GuestsController extends Controller
     public function destroy(Guest $guest)
     {
         //
+    }
+
+    public function updatePassword(Request $request)
+    {
+       
+        $updatePassword = GuestHelper::updatePassword($request);
+
+        return response()->json($updatePassword);
+
+    
+
+       
     }
 }
