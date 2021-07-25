@@ -8,6 +8,7 @@ use App\Models\Guest;
 use Illuminate\Support\Facades\Hash;
 use Auth;
 use App\Helpers\CredentialHelper;
+
 class UsersController extends Controller
 {
     public function index()
@@ -42,6 +43,15 @@ class UsersController extends Controller
             return response()->json(['message'=>'Logged out']);
         
     }
+
+    public function updatePassword(Request $request)
+    {
+       
+        $updatePassword = CredentialHelper::updatePassword($request);
+
+        return response()->json($updatePassword); 
+    }
+
 
 
 }

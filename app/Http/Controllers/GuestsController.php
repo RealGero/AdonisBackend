@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\GuestHelper;
 use App\Models\Guest;
 use App\Models\User;
+use App\Models\Company;
 use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Support\Facades\Hash;
@@ -78,9 +79,9 @@ class GuestsController extends Controller
      * @param  \App\Models\Guest  $guest
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $guest = GuestHelper::update($request, $id);
+        $guest = GuestHelper::update($request);
 
         return response()->json($guest);
     }
@@ -96,15 +97,19 @@ class GuestsController extends Controller
         //
     }
 
-    public function updatePassword(Request $request)
-    {
-       
-        $updatePassword = GuestHelper::updatePassword($request);
-
-        return response()->json($updatePassword);
-
     
+    public function guestUploadImage(Request $request)
+    {
+        $image = GuestHelper::guestUploadImage($request);
 
-       
+        return response()->json($image);
+    }
+
+    public function showSpecificCompany($id)
+    {
+      
+        $show = GuestHelper::showSpecificCompany($id);
+
+        return response()->json($show);
     }
 }

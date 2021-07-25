@@ -2,7 +2,10 @@
 
 namespace App\Helpers;
 use App\Models\Guest;
+use App\Models\User;
+use App\Models\Company;
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 class GuestHelper
 {
@@ -13,11 +16,15 @@ class GuestHelper
          // VALIDATION PROFILE TO GUEST
          $request->validate([
             'first_name'=> 'required|string|min:2|regex:/^[\pL\s\-]+$/u',
-            'middle_name'=> 'required|string|min:2|regex:/^[\pL\s\-]+$/u',
+            'middle_name'=> 'string|min:2|regex:/^[\pL\s\-]+$/u',
             'last_name'=> 'required|string|min:2|regex:/^[\pL\s\-]+$/u',
-            'address'=> 'required|string|min:2'
+            'extension_name' => 'min:2|string|max:5',
+            'address'=> 'required|string|min:2',
+            'phone_number' => 'required|digits:11|unique:guests|unique:companies',
+            'birth_date' => 'required|date'
         ]);
 
+     
         // VALIDATION PROFILE TO GUEST
         $guest = new Guest;
 
@@ -26,6 +33,9 @@ class GuestHelper
         $guest->m_name = $request->input('middle_name');
         $guest->l_name = $request->input('last_name');
         $guest->address = $request->input('address');
+        $guest->phone_number = $request->input('phone_number');
+        $guest->extension_name = $request->input('extension_name');
+        $guest->birth_date = $request->input('birth_date');
         $guest->user_id = Auth::id();
         
         $guest->save();
@@ -40,7 +50,7 @@ class GuestHelper
     }
 
 
-    public static function update($request, $id)
+    public static function update($request)
     {
                // VALIDATION PROFILE TO GUEST
                $request->validate([
@@ -51,58 +61,64 @@ class GuestHelper
             ]);
     
             // VALIDATION PROFILE TO GUEST
-            $guest = new Guest;
+           $id = Auth::user()->user_id;
+          $guest = User::find($id)->guest;
     
     
             $guest->f_name = $request->input('first_name');
             $guest->m_name = $request->input('middle_name');
             $guest->l_name = $request->input('last_name');
             $guest->address = $request->input('address');
-            $guest->user_id = Auth::user()->user_id;
+            $guest->user_id = $id;
             
             $guest->save();
           
     
             return response()->json([
     
-                'message'=>'Successfully Added',
+                'message'=>'Successfully Updated',
                 'guest' => $guest
     
             ]);
 
 
     }
-    public static function updatePassword($request)
+
+    public static function guestUploadImage($request)
     {
-
+           
         $request->validate([
+            'image' => 'mimes:jpg,png,jpeg|max:1999'
+        ]);
 
-            'current_password'=> 'required',
-            'new_password'=>'required|string|min:8',
-            'password_confirmation' =>'required|min:8|same:new_password'
-    
-            ]);
+        $id = Auth::user()->user_id;
 
-        if(!(Hash::check($request->get('current_password'),Auth::user()->password)))
-        {
-            return response()->json([
-                'error' => 'The current password does not match with your old password'
-            ]);
-        }
+       return $guest = User::find($id)->guest;
+        $user_name = $company->company_name;    
+       
+      if($request->hasFile('image')){
+        
+         $newImage  = time(). '-'. $user_name .'.' .$request->image->extension();
+        $test =  $request->file('image')->storeAs('public/company',$newImage);
 
-        if(strcmp($request->get('current_password'),$request->get('new_password'))==0)
-        {
-            return response()->json([
-                'error' => 'The current password cannot be the same with the new password'
-            ]);
-        }
-        $user = Auth::user();
-
-        $user->password = bcrypt($request->get('new_password'));
-        $user->save();
+        $company->image = $test;
+        $company->save();
 
         return response()->json([
-            'message' => 'Password successfully changed'  
-          ]);
+            'message' => 'Successfully updated your image',
+            
+
+        ]);
+
+      }
     }
+
+    public static function showSpecificCompany($id)
+    {
+        $company = Company::find($id)->first();
+
+        return  $company;
+
+    }
+   
 }

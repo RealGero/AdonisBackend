@@ -18,6 +18,7 @@ class CreateCompaniesTable extends Migration
             $table->bigInteger('user_id');
             $table->string('company_name');
             $table->string('address');
+            $table->string('phone_number')->unique();
             $table->string('image')->default('default.jpg');
             $table->timestamps();
             $table->softDeletes();

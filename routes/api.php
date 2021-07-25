@@ -29,18 +29,31 @@ use App\Http\Controllers\CompanyController;
 Route::group(['middleware'=>['auth:api']],function(){
     // ALL
     Route::post('/logout',[UsersController::class, 'logout']); 
-    Route::post('/update-password',[GuestsController::class, 'updatePassword']); 
+    Route::post('/update-password',[UsersController::class, 'updatePassword']); 
     
     // GUEST ROUTE
     
-    Route::post('/guest/profile',[GuestsController::class,'store'])->name('guest.store');
-    Route::post('/guest/update',[GuestsController::class,'store'])->name('guest.update');
-    Route::get('/users/home',[GuestsController::class,'index'])->name('guest.index');
+    Route::post('/user/profile',[GuestsController::class,'store'])->name('user.store');
+    Route::put('/user/update',[GuestsController::class,'update'])->name('user.update');
+    Route::get('/user/home',[GuestsController::class,'index'])->name('user.index');
+    Route::post('/user/image',[GuestsController::class,'guestUploadImage'])->name('user.image');
     
+    // GUEST CAN REVIEW
+    // Route::post('user/review',[ReviewController::class,''])
+    
+
+
+    // GUEST VISIT ONE COMPANY
+    Route::get('user/company/{id}',[GuestsController::class,'showSpecificCompany'])->name('company.show');
+
     // COMPANY ROUTE
-    Route::put('company/image',[CompanyController::class,'uploadImage'])->name('company.image');
+    Route::post('company/image',[CompanyController::class,'companyUploadImage'])->name('company.image');
     Route::post('company/profile',[CompanyController::class,'store'])->name('company.profile');
-    
+    Route::put('company/profile',[CompanyController::class,'update'])->name('company.profile.update');
+   
+
+
+
     // ADMIN ROUTE
     Route::get('admin/companies',[AdminController::class, 'getCompany']);
     Route::get('admin/guests',[AdminController::class, 'getGuests']);

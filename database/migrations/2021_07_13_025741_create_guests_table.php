@@ -17,9 +17,13 @@ class CreateGuestsTable extends Migration
             $table->increments('guest_id');
             $table->bigInteger('user_id');
             $table->string('f_name');
-            $table->string('m_name');
+            $table->string('m_name')->nullable();
             $table->string('l_name');
+            $table->string('extension_name')->nullable();
             $table->string('address');
+            $table->string('phone_number')->unique();
+            $table->date('birth_date');
+            $table->string('user_image')->default('default-user-image.jpg');
             $table->timestamps();
             $table->softDeletes();
         });

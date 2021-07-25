@@ -47,32 +47,10 @@ class CompanyController extends Controller
 
     public function uploadImage(Request $request)
     {
-        
-
-        $request->validate([
-            'image' => 'mimes:jpg,png,jpeg|max:1999'
-        ]);
-
-        $id = Auth::user()->user_id;
-
-        $company = User::find($id)->company;
-        $user_name = $company->company_name;    
        
-      if($request->hasFile('image')){
+     $company = CompanyHelper::uploadImage($request);
 
-        $newImage  = time(). '-'. $user_name . $request->image->extension();
-        $test =  $request->file('image')->storeAs('public/company',$newImage);
-
-        $company->image = $test;
-        $company->save();
-
-        return response()->json([
-            'message' => 'Successfully updated your profile',
-            'data' => $company
-
-        ]);
-
-      }
+     return response()->json($company);
  
     }
 
@@ -84,7 +62,7 @@ class CompanyController extends Controller
      */
     public function show(Company $company)
     {
-        //
+        
     }
 
     /**
@@ -107,7 +85,10 @@ class CompanyController extends Controller
      */
     public function update(Request $request, Company $company)
     {
-        //
+       $company = CompanyHelper::update($request);
+
+
+       return response()->json($company);
     }
 
     /**

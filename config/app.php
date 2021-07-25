@@ -231,6 +231,7 @@ return [
         'AdminHelper' => App\Helpers\AdminHelper::class,
         'CompanyHelper' => App\Helpers\CompanyHelper::class,
         'GuestHelper' => App\Helpers\GuestHelper::class,
+        'ReviewHelper' => App\Helpers\ReviewHelper::class,
 
     ],
 

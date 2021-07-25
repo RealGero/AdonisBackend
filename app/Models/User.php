@@ -57,6 +57,6 @@ class User extends Authenticatable
 
     public function guest(){
 
-        return $this->hasOne(Guest::class,'user_id','guest_id');
+        return $this->hasOne('App\Models\Guest','user_id');
     }
 }
