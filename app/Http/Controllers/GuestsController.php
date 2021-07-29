@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use Auth;
+use DB;
 use Illuminate\Support\Facades\Hash;
 class GuestsController extends Controller
 {
@@ -19,10 +20,9 @@ class GuestsController extends Controller
     public function index()
     {
         
-        $companies = Company::all();
-
+        
+        $companies = GuestHelper::index();
         return response()->json($companies);
-
 
     }
 
@@ -107,9 +107,18 @@ class GuestsController extends Controller
 
     public function showSpecificCompany($id)
     {
+       
       
         $show = GuestHelper::showSpecificCompany($id);
 
         return response()->json($show);
+    }
+
+    public function viewSpecificCompany($id)
+    {
+        // return 123;
+        // $company = Company::find($id)->first();
+
+        // return $company;
     }
 }

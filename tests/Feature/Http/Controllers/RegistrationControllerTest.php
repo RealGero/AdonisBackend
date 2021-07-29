@@ -7,13 +7,16 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Passport\Passport;
+
 class RegistrationControllerTest extends TestCase
 {
    use RefreshDatabase;
 
     public function test_for_users_registration()
     {
-        
+        // $user = User::find()
+        // Passport::actingAs()
        $userData = [
             'name' => 'John Doe',
             'email' => 'john@gmail.com',

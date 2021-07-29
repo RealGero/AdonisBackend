@@ -5,11 +5,20 @@ use App\Models\Guest;
 use App\Models\User;
 use App\Models\Company;
 use Auth;
+use DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 class GuestHelper
 {
 
+    public static function index(){
+
+        $companies = DB::table('companies as a')
+        ->leftJoin('reviews as b','b.company_id', '=','a.company_id')
+        ->select('a.company_name','b.total')
+        ->get();
+        return $companies;
+    }
     public static function store($request)
     {
         // return  response()->json(Auth::user());
@@ -86,26 +95,29 @@ class GuestHelper
 
     public static function guestUploadImage($request)
     {
-           
+          
+     
         $request->validate([
-            'image' => 'mimes:jpg,png,jpeg|max:1999'
+            'user_image' => 'mimes:jpg,png,jpeg|max:1999'
         ]);
 
         $id = Auth::user()->user_id;
 
-       return $guest = User::find($id)->guest;
-        $user_name = $company->company_name;    
-       
-      if($request->hasFile('image')){
+        $guest = User::find($id)->guest;
         
-         $newImage  = time(). '-'. $user_name .'.' .$request->image->extension();
-        $test =  $request->file('image')->storeAs('public/company',$newImage);
+       
+      if($request->hasFile('user_image')){
+        
+         $imageName  = time() .'.' .$request->file('user_image')->getClientOriginalExtension();
+         $request->file('user_image')->storeAs('public/guest/',$imageName); 
 
-        $company->image = $test;
-        $company->save();
+
+        $guest->user_image = $imageName;
+        $guest->save();
 
         return response()->json([
             'message' => 'Successfully updated your image',
+            'image' => $guest->user_image
             
 
         ]);
@@ -115,10 +127,13 @@ class GuestHelper
 
     public static function showSpecificCompany($id)
     {
-        $company = Company::find($id)->first();
+        
+        $company = DB::table('companies as a')
+        ->where('company_id',$id)->first();
 
         return  $company;
 
     }
    
+ 
 }

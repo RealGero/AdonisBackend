@@ -19,4 +19,9 @@ class Guest extends Model
     {
         return $this->belongsTo('App\Models\User','user_id','guest_id');
     }
+
+    public function reviews()
+    {
+        return $this->hasMany('App\Models\Review');
+    }
 }

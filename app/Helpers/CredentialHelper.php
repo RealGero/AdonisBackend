@@ -20,13 +20,16 @@ class CredentialHelper
 
         if($validator->fails()){
 
-            return response()->json($validator->errors());
+            return response()->json([
+                'message' => $validator->errors()
+            ],403);
 
         }else{
             $user = new User([
                 'email' => strtolower($request->email),
                 'password' => Hash::make($request->password),
                 'user_type' => $request->user_type
+                
             ]);
     
            
@@ -57,13 +60,13 @@ class CredentialHelper
     
     if (!Auth::attempt($login))
     {
-        return response(['message' => 'invalid credentials']);
+        return response()->json(['message' => 'invalid credentials']);
 
     }
 
     $authToken = Auth::user()->createToken('authToken')->accessToken;
 
-        return response(['user' => Auth::user(), 'access_token' => $authToken]);
+        return response(['user' => Auth::user(), 'auth_token' => $authToken]);
 
     }
 

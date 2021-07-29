@@ -22,6 +22,7 @@ class CompanyHelper
         $company = new Company;
         $company->company_name = $request->input('company_name');
         $company->address = $request->input('address');
+        $company->phone_number = $request->input('phone_number');
         $company->user_id = Auth::id();
 
         $company->save();

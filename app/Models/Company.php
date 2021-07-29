@@ -17,12 +17,13 @@ class Company extends Model
     
     public function user()
     {
-        return $this->belongsTo('App\Models\User','user_id','company_id');
+        return $this->belongsTo('App\Models\User');
     }
 
     public function reviews()
     {
-        return $this->hasMany('App\Review','company_id');
+        return $this->hasMany('App\Review');
     }
+
 }
 

@@ -8,6 +8,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\AdminController; 
 use App\Http\Controllers\GuestsController; 
 use App\Http\Controllers\CompanyController; 
+use App\Http\Controllers\ReviewsController; 
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -35,9 +36,10 @@ Route::group(['middleware'=>['auth:api']],function(){
     
     Route::post('/user/profile',[GuestsController::class,'store'])->name('user.store');
     Route::put('/user/update',[GuestsController::class,'update'])->name('user.update');
-    Route::get('/user/home',[GuestsController::class,'index'])->name('user.index');
+ 
     Route::post('/user/image',[GuestsController::class,'guestUploadImage'])->name('user.image');
-    
+    Route::get('/user/home',[GuestsController::class,'index'])->name('user.index');
+ 
     // GUEST CAN REVIEW
     // Route::post('user/review',[ReviewController::class,''])
     
@@ -60,6 +62,9 @@ Route::group(['middleware'=>['auth:api']],function(){
     Route::post('admin/profile',[AdminController::class, 'storeAdminProfile']);
     Route::get('admin/profile/{id}',[AdminController::class, 'showProfile']);
     Route::post('admin/profile/{id}',[AdminController::class, 'updateAdminProfile']);
+
+    // REVIEW ROUTE
+    Route::post('review/{id}',[ReviewsController::class,'store'])->name('review.store');
     
 });
 Route::post('/login',[UsersController::class, 'login'])->name('user.login');
