@@ -13,11 +13,25 @@ class GuestHelper
 
     public static function index(){
 
-        $companies = DB::table('companies as a')
-        ->leftJoin('reviews as b','b.company_id', '=','a.company_id')
-        ->select('a.company_name','b.total')
-        ->get();
-        return $companies;
+
+    $companies = DB::select(DB::raw("SELECT 
+        a.company_name, b.total_review
+        FROM companies AS a
+        LEFT JOIN (
+            SELECT
+            b.total_review,
+            b.company_id
+            FROM (
+                SELECT
+                MAX(total_id) as total_id
+                FROM totals
+                GROUP BY company_id
+            ) as a
+        JOIN totals as b ON b.total_id = a.total_id
+        ) as b ON b.company_id = a.company_id"));
+        
+
+        return response()->json($companies);
     }
     public static function store($request)
     {
@@ -127,11 +141,31 @@ class GuestHelper
 
     public static function showSpecificCompany($id)
     {
-        
-        $company = DB::table('companies as a')
-        ->where('company_id',$id)->first();
+        $total_review = DB::table('totals')
+        ->select('total_review')
+        ->where('company_id',$id)
+        ->latest()
+        ->first();
 
-        return  $company;
+
+        $company_details = DB::table('companies as a')
+        ->select('a.company_name','a.address','a.phone_number','a.image')
+        ->where('company_id',$id)
+        ->first();
+        
+        $company_reviews = DB::table('reviews as a')
+        ->leftJoin('guests as b','b.guest_id','a.guest_id')
+        ->where('a.company_id',$id)
+        ->get();
+       
+        
+
+        return  response()->json([
+            'total' =>  $total_review,
+            'company_detail' => $company_details,
+            'company_reviews' =>  $company_reviews,
+           
+        ]);
 
     }
    

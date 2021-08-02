@@ -76,12 +76,12 @@ class ReviewHelper{
                 
             $total->total_review = ($numerator /  $denominator );
             
-                $total->review_id = $review->review_id;
+                $total->company_id = $review->company_id;
                 $total->save();
             }else{
 
                 $total->total_review = ($numerator /  $denominator );
-                $total->review_id = $review->review_id;
+                $total->company_id = $review->company_id;
                 $total->save();
             
             }

@@ -38,7 +38,7 @@ Route::group(['middleware'=>['auth:api']],function(){
     Route::put('/user/update',[GuestsController::class,'update'])->name('user.update');
  
     Route::post('/user/image',[GuestsController::class,'guestUploadImage'])->name('user.image');
-    Route::get('/user/home',[GuestsController::class,'index'])->name('user.index');
+    Route::get('/user/home',[GuestsController::class,'index'])->name('user.home');
  
     // GUEST CAN REVIEW
     // Route::post('user/review',[ReviewController::class,''])
@@ -52,6 +52,7 @@ Route::group(['middleware'=>['auth:api']],function(){
     Route::post('company/image',[CompanyController::class,'companyUploadImage'])->name('company.image');
     Route::post('company/profile',[CompanyController::class,'store'])->name('company.profile');
     Route::put('company/profile',[CompanyController::class,'update'])->name('company.profile.update');
+    Route::get('company/home',[CompanyController::class,'index'])->name('company.home');
    
 
 

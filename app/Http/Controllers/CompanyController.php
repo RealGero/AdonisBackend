@@ -16,7 +16,9 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        //
+        $users = CompanyHelper::index();
+
+        return response()->json($users);
     }
 
     /**

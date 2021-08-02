@@ -114,11 +114,5 @@ class GuestsController extends Controller
         return response()->json($show);
     }
 
-    public function viewSpecificCompany($id)
-    {
-        // return 123;
-        // $company = Company::find($id)->first();
-
-        // return $company;
-    }
+    
 }

@@ -52,7 +52,7 @@ class User extends Authenticatable
 
     public function company(){
 
-        return $this->hasOne('App\Models\Company','user_id');
+        return $this->hasOne('App\Models\Company','user_id','user_id');
     }
 
     public function guest(){

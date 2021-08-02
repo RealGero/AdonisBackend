@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\Models\Company;
 use App\Models\User;
+use DB;
 use Auth;
 
 class CompanyHelper
@@ -81,5 +82,20 @@ class CompanyHelper
         return response()->json([
             'message' => 'Successfully updated your profile'
         ]);
+    }
+
+    public static function index()
+    {
+       
+        $id = Auth::user()->user_id;
+        $company_id = User::find($id)->company->company_id;
+    
+        $users = DB::table('reviews as a')
+        ->leftJoin('guests as b','b.guest_id','a.guest_id')
+        // ->select('a.*','b.f_name','b.m_name','b.l_name','b.extension_name')
+        ->where('a.company_id', $company_id)
+        ->get();
+
+        return response()->json($users);
     }
 }
